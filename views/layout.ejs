@@ -26,7 +26,16 @@
   </nav>
 
   <section class="main" id="s1">
-    <%- body %>
+    <% if (errors.length) { %>
+      <span id='ErrorMsgs'>
+        Corregir errores:<br/>
+        <% for (var i in errors) { %>
+          <span> <%= errors[i].message %> </span><br/>
+        <% } %>
+      </span>
+    <% } %>
+
+    <div><%- body %></div>
     <!--<div>
       <table>
         <tr><td><a href="quizes/1">Capital de Italia</a></td></tr>
