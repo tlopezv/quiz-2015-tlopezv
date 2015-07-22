@@ -53,13 +53,16 @@ exports.new = function(req, res) {
 // POST /quizes/create
 exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
+  // Cogemos el valor de la <option selected> del <select name="tema"> que se mandó en el <form>
+  // Y se lo asignamos a la propiedad tema del objeto quiz, correspondiente con el modelo
+  quiz.tema = req.body.tema;
 
   quiz.validate().then(function(err){
     if (err) {
       res.render('quizes/new', {quiz: quiz, errors: err.errors});
     } else {
-      // guarda en DB los campos pregunta y respuesta de quiz
-      quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+      // guarda en DB los campos tema, pregunta y respuesta de quiz
+      quiz.save({fields: ["tema", "pregunta", "respuesta"]}).then(function(){
         res.redirect('/quizes');
       })  // Redirección HTTP (URL relativo) lista de preguntas
     }
@@ -76,6 +79,9 @@ exports.edit = function(req, res) {
 
 // PUT /quizes/:id
 exports.update = function(req, res) {
+  console.log("req.body.tema = "+req.body.tema);
+  // Cogemos el valor de la <option selected> del <select name="tema"> que se mandó en el <form>
+  req.quiz.tema = req.body.tema;
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
 
@@ -83,8 +89,8 @@ exports.update = function(req, res) {
     if (err) {
       res.render('quizes/edit', {quiz: req.quiz, errors: erro.errors});
     } else {
-      req.quiz    // save: guarda campos pregunta y respuesta en DB
-      .save( {fields: ["pregunta", "respuesta"]})
+      req.quiz    // save: guarda campos tema, pregunta y respuesta en DB
+      .save( {fields: ["tema", "pregunta", "respuesta"]})
       .then( function(){ res.redirect('/quizes');});
     }
   })
