@@ -8,6 +8,17 @@ var app = require('../app');
 var debug = require('debug')('quiz:server');
 var http = require('http');
 
+// el módulo 'fs' permite leer los ficheros asociados a la variable 'options'
+// con la clave privada y el certificado auto-firmado.
+var fs = require('fs');
+// el módulo https permite instalar HTTPS.
+var https = require('https');
+
+var options = {
+  key: fs.readFileSync('certs/quiz-2015-tlopezv.pem').toString(),
+  cert: fs.readFileSync('certs/quiz-2015-tlopezv-cert.pem').toString()
+};
+
 /**
  * Get port from environment and store in Express.
  */
@@ -21,6 +32,10 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+var serverSecure = https.createServer(options, app);
+serverSecure.listen(8443, function() {
+  debug('Express server listening on port ' + server.address().port);
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
