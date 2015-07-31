@@ -21,7 +21,7 @@
     <%}else{%>
       <span class="right"> <%=session.user.username%> <a href="/logout">Logout</a></span>
     <%}%>
-    
+
     <h2>Quiz<span>: el juego de las preguntas</span></h2>
   </header>
 
@@ -40,6 +40,10 @@
         <% } %>
       </span>
     <% } %>
+
+    <%if(session.logout){%>
+      <span id='Logout'> <%= session.logout %> </span>
+    <%}%>
 
     <div><%- body %></div>
     <!--<div>

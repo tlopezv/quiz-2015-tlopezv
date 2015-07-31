@@ -41,8 +41,43 @@ app.use(function(req, res, next) {
 
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
+
+  //if (session)  console.log('session: '+JSON.stringify(session));
+  // pasa el control al siguiente middleware.
   next();
 });
+
+// añadir un middleware de auto-logout
+app.use(function(req, res, next) {
+
+  if (req.session.user && req.session.user.timeStamp){
+
+    // El middleware debe comprobar en cada transacción con una sesión activa
+    // si la han transcurrido más de 2 minutos desde la transacción anterior
+    // en dicha sesión, en cuyo caso destruirá la sesión.
+    if(new Date().getTime() - req.session.user.timeStamp > 120000){
+      console.log('\n **** Redirección a Logout ***** \n');
+      delete req.session.user;
+      req.session.logout = 'Se ha producido un Logout por exceso de tiempo de sesion inactiva ';
+      console.log('\n Errors: ' + JSON.stringify(req.session.errors));
+      res.redirect(req.session.redir.toString());
+    } else {
+      next();
+    }
+  } else {
+    console.log('No había registro de tiempo de la session:');
+    console.log('\n\treq.session: '+JSON.stringify(req.session.user));
+    if(req.session.user) {
+      // que guarde en cada transacción la hora del reloj del sistema en una
+      // variable de la sesión a la que está asociada.
+      req.session.user.timeStamp = new Date().getTime();
+      console.log('req.session.timeStamp: '+req.session.user.timeStamp);
+    }
+    next();
+  }
+
+});
+
 
 app.use('/', routes);
 // app.use('/users', users);
