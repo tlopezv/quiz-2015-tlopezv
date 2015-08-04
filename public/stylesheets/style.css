@@ -14,3 +14,72 @@ nav span              { margin: 0px 10px 0px 0px; }
 #Logout               { color: #FF9966; font-size: smaller;}
 
 .right                { float: right;}
+
+
+#statistics, #statistics td, #statistics tr {
+padding:0px;
+border-spacing: 0px;
+}
+
+#statistics {
+border:1px black solid;
+border-radius:5px;
+min-width:400px;
+font-family: Helvetica,Arial;
+}
+
+#statistics td {
+padding:6px;
+}
+
+/*Primera fila, primera celda*/
+#statistics tr:first-child td:first-child {
+border-radius:5px 0px 0px 0px;
+}
+
+/*Primera fila, última celda*/
+#statistics tr:first-child td:last-child {
+border-radius:0px 5px 0px 0px;
+}
+
+/*Última fila, primera celda*/
+#statistics tr:last-child td:first-child {
+border-radius:0px 0px 0px 5px;
+}
+
+/*Última fila, última celda*/
+#statistics tr:last-child td:last-child {
+border-radius:0px 0px 5px 0px;
+}
+
+#statistics td:not(:last-child) {
+border-right:1px #666 solid;
+}
+
+
+#statistics tr:nth-child(2n) {
+background: #87CEEB;
+}
+
+#statistics tr:nth-child(2n+1){
+background: #ADD8E6;
+}
+
+#statistics.header tr:not(:first-child):hover, table:not(.header) tr:hover {
+background:#E0FFFF;
+}
+
+#statistics:not(.header) tr {
+text-align: left;
+}
+
+#statistics.header tr:first-child {
+font-weight: bold;
+color:#fff;
+background-color: #444;
+border-bottom:1px #000 solid;
+}
+
+#statistics.header tr:nth-child(n+2) {
+text-align: right;
+}
