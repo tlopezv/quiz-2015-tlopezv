@@ -58,7 +58,7 @@ app.use(function(req, res, next) {
     if(new Date().getTime() - req.session.user.timeStamp > 120000){
       console.log('\n **** Redirección a Logout ***** \n');
       delete req.session.user;
-      req.session.logout = 'Se ha producido un Logout por exceso de tiempo de sesion inactiva ';
+      req.session.logout = 'Se ha producido un Logout por exceso de tiempo de sesion inactiva \n Vuelva a hacer LOGIN';
       console.log('\n Errors: ' + JSON.stringify(req.session.errors));
       res.redirect(req.session.redir.toString());
     } else {
@@ -72,7 +72,11 @@ app.use(function(req, res, next) {
       // variable de la sesión a la que está asociada.
       req.session.user.timeStamp = new Date().getTime();
       console.log('req.session.timeStamp: '+req.session.user.timeStamp);
+      if(req.session.logout){
+        delete req.session.logout;
+      }
     }
+
     next();
   }
 
